@@ -1,0 +1,30 @@
+{
+  "name": "request-cached",
+  "version": "0.0.1",
+  "description": "Cached drop-in replacement for the request module.",
+  "main": "request-cached.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hemphillcc/request-cached.git"
+  },
+  "keywords": [
+    "pokemon",
+    "api",
+    "wrapper"
+  ],
+  "author": "Bomb Shelter Software",
+  "license": "MIT",
+  "dependencies": {
+    "lru-cache": "^2.6.4",
+    "request": "^2.55.0"
+  },
+  "devDependencies": {
+    "async": "*",
+    "chai": "*",
+    "grunt": "*",
+    "grunt-simple-mocha": "*"
+  }
+}
