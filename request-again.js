@@ -7,7 +7,8 @@ var defaults = {
 };
 
 /* CONSTRUCTORS */
-function constructor(param1, param2, param3) {
+var requestAgain = function(param1, param2, param3) {
+  var self = this;
 
   // handle constructor overloading
   var url, options, fn;
@@ -25,6 +26,6 @@ function constructor(param1, param2, param3) {
 
 }
 
-module.exports = constructor;
+module.exports = requestAgain;
 
 /* HELPERS */

@@ -1,19 +1,18 @@
 {
-  "name": "request-cached",
+  "name": "request-again",
   "version": "0.0.1",
   "description": "Cached drop-in replacement for the request module.",
-  "main": "request-cached.js",
+  "main": "request-again.js",
   "scripts": {
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hemphillcc/request-cached.git"
+    "url": "git://github.com/hemphillcc/request-again.git"
   },
   "keywords": [
-    "pokemon",
-    "api",
-    "wrapper"
+    "request",
+    "cache"
   ],
   "author": "Bomb Shelter Software",
   "license": "MIT",
