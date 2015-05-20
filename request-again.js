@@ -1,14 +1,15 @@
+'use-strict';
+
 /* REQUIREMENTS */
 
 var request = require('request');
-var nodeCache = require('node-cache');
-var clone = require('clone');
+var cache = require('lru-cache');
 
 /* DEFAULTS */
 
 var defaults = {
-  stdTTL: 0,
-  checkperiod: 600
+  max: 10,
+  maxAge: 60000
 };
 
 /* CONSTRUCTORS */
@@ -16,7 +17,8 @@ var defaults = {
 var RequestAgain = function() {
   var self = this;
   self.cacheOptions = defaults;
-  self.cache = new nodeCache(self.cacheOptions);
+  self.cache = new cache(self.cacheOptions);
+  self.cloner = require('clone');
 };
 
 module.exports = new RequestAgain();
@@ -25,8 +27,11 @@ module.exports = new RequestAgain();
 
 RequestAgain.prototype.enableCache = function(cacheOptions) {
   var self = this;
-  self.cacheOptions = cacheOptions;
-  self.cache = new nodeCache(self.cacheOptions);
+  self.cacheOptions = {
+    max: cacheOptions.max || defaults.max,
+    maxAge: cacheOptions.maxAge || defaults.maxAge
+  };
+  self.cache = new cache(self.cacheOptions);
   return self;
 };
 
@@ -37,51 +42,34 @@ RequestAgain.prototype.cached = function(param1, param2, param3) {
   options = param2;
   callback = param3;
 
-  var optionsClone = clone(options);
-
-  self.getCache(url, optionsClone, function(err, cachedResponse) {
-    if (cachedResponse) {
-      return callback(null, null, cachedResponse);
+  var optionsClone = self.cloner(options);
+  var cachedResponse = self.getCache(url, optionsClone);
+  if (cachedResponse) {
+    return callback(null, null, cachedResponse);
+  }
+  request(url, options, function(err, res, body) {
+    if (err) {
+      return callback(err, null, null);
     }
-    request(url, options, function(err, res, body) {
-      if (err) {
-        return callback(err, null, null);
-      }
-      self.setCache(url, optionsClone, body, function(err, cacheSetSuccess) {
-        return callback(null, res, body);
-      });
-    });
+    self.setCache(url, optionsClone, body);
+    return callback(null, res, body);
   });
 };
 
-RequestAgain.prototype.setCache = function(url, options, value, fn) {
+RequestAgain.prototype.setCache = function(url, options, value) {
   var self = this;
-  if (self.cache) {
-    var key = genKey(url, options);
-    self.cache.set(key, value, function(err, success) {
-      if (err || !success) {
-        return fn(err);
-      }
-      return fn();
-    });
-  } else {
-    throw new Error('Cache not set on request-again object. You may have not constructed it properly.');
-  }
+  var key = genKey(url, options);
+  var valueClone = self.cloner(value);
+  self.cache.set(key, valueClone);
+  return;
 };
 
-RequestAgain.prototype.getCache = function(url, options, fn) {
+RequestAgain.prototype.getCache = function(url, options) {
   var self = this;
-  if (self.cache) {
-    var key = genKey(url, options);
-    return self.cache.get(key, function(err, value) {
-      if (err || !value) {
-        return fn(err);
-      }
-      return fn(null, value);
-    });
-  } else {
-    throw new Error('Cache not set on request-again object. You may have not constructed it properly.');
-  }
+  var key = genKey(url, options);
+  var value = self.cache.get(key);
+  var valueClone = self.cloner(value);
+  return valueClone;
 };
 
 /* HELPERS */

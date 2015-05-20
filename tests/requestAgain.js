@@ -1,11 +1,6 @@
 var chai = require('chai');
 var expect = chai.expect;
-
 var request = require('../request-again');
-
-request.enableCache({
-  stdTTL: 300
-});
 
 function makeTheCall() {
   var startTime = Date.now();
