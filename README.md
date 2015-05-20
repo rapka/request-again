@@ -8,7 +8,7 @@ Install via npm:
 
 ## What Does it Do?
 
-This module is a plugin for [https://www.npmjs.com/package/request](request), not a direct replacement. For now, it only supports a limited portion of request's functionality.
+This module is a plugin for [request](https://www.npmjs.com/package/request), not a direct replacement. For now, it only supports a limited portion of request's functionality.
 
 The request-again module allows you to cache the body of a request http call for a period of time. This is helpful if you regularly call an external API, but the information you are retrieving is updated infrequently.
 
@@ -20,8 +20,11 @@ After installing the module:
 
 Then call ``request.cached()`` like you would call request ordinarily. Here's an example calling the Pokémon API:
 
-    request.cached('http://pokeapi.co/api/v1/pokemon/25', {}, function(err, res, body) {
-      console.log(body);
+    request.cached('http://pokeapi.co/api/v1/pokemon/1', {
+      someOption: value
+    }, function(err, res, body) {
+      return console.log('The request took:',
+        Date.now() - startTime + ' ms');
     });
 
 If you make the same request call within a period of time, you will retrieve the cached object immediately instead of calling the API again.
@@ -56,7 +59,7 @@ We plan to make this more flexible and full-featured in the feature.
 
 ## Version History
 
-* 0.0.1/0.0.2 Initial release. This will need some serious work before I consider it production ready.
+* 0.0.1 Initial release. This will need some serious work before I consider it production ready.
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: https://github.com/hemphillcc/request-again/blob/master/LICENSE
