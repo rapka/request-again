@@ -59,7 +59,7 @@ We plan to make this more flexible and full-featured in the feature.
 
 ## Version History
 
-* 0.0.4 Initial release. This will need some serious work before I consider it production ready.
+* 0.0.5 Initial release. This will need some work before I consider it production ready.
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: https://github.com/hemphillcc/request-again/blob/master/LICENSE
