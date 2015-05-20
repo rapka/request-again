@@ -8,7 +8,7 @@ Install via npm:
 
 ## Version History
 
-* 0.0.0 Starting development
+* 0.0.1 Initial release. This will need some serious work before I consider it production ready.
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: https://github.com/hemphillcc/request-again/blob/master/LICENSE

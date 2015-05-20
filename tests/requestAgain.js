@@ -5,19 +5,18 @@ var expect = chai.expect;
 var request = require('../request-again');
 
 request.enableCache({
-  max: 100,
+  max: 5,
   maxAge: 1000 * 60 * 1
 });
 
 function makeTheCall() {
   var startTime = Date.now();
   request.cached('http://pokeapi.co/api/v1/pokemon/1', {}, function(err, res, body) {
-    // console.log('err::', err);
-    // console.log('body::', body);
-    return console.log('It took:', Date.now() - startTime);
+    return console.log('The request took:', Date.now() - startTime + ' ms');
   });
 }
 
 makeTheCall();
-
+setTimeout(makeTheCall, 10);
+setTimeout(makeTheCall, 800);
 setTimeout(makeTheCall, 2000);

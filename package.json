@@ -1,7 +1,7 @@
 {
   "name": "request-again",
   "version": "0.0.1",
-  "description": "Cached drop-in replacement for the request module.",
+  "description": "Cached plugin for the request NodeJS module.",
   "main": "request-again.js",
   "scripts": {
     "test": "grunt test"
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "request",
-    "cache"
+    "cache",
+    "http"
   ],
   "author": "Bomb Shelter Software",
   "license": "MIT",

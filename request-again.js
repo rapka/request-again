@@ -6,7 +6,7 @@ var lru = require('lru-cache');
 /* DEFAULTS */
 
 var defaults = {
-  max: 50,
+  max: 10,
   maxAge: 1000 * 60 * 1
 };
 
