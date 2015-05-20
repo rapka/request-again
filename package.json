@@ -1,6 +1,6 @@
 {
   "name": "request-again",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Cached plugin for the request NodeJS module.",
   "main": "request-again.js",
   "scripts": {
