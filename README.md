@@ -53,7 +53,7 @@ Right now the module only supports a request structure of:
 
     request.cached(url, optionsObject, callbackFunction);
 
-So it is not quite as flexible as a standard request object. Additionally, if you retrieve a cached response, the first two parameters of the callback function (`error`` and ``response``) will be ``null``, so you will only get back the ``body``.
+So it is not quite as flexible as a standard request object. Additionally, if you retrieve a cached response, the first two parameters of the callback function (``error`` and ``response``) will be ``null``, so you will only get back the ``body``.
 
 We plan to make this more flexible and full-featured in the feature.
 
