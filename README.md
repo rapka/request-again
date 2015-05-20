@@ -33,14 +33,14 @@ If you make the same request call within a period of time, you will retrieve the
 
 A cache will be created automatically when you require the module with the following default settings:
 
-* ``max: 10``. This is the maximum size (number of objects) held by the cache. If the maximum is exceeded, the least-recently-used object will be kicked from the cache.
-* ``maxAge: 60000``. This is the maximum time (in milliseconds) which an object will be stored in the cache before new data is requested from the external API. The default is 1 minute.
+* ``stdTTL: 0``. This is the maximum time (in seconds) which an object will be stored in the cache before new data is requested from the external API. The default is 0, which indicates ``unlimited`` TTL.
+* `checkperiod: 600``. The period (in seconds) used to determine the automatic delete check interval. Setting this to 0 means there will be no periodic check.
 
 You can override the default settings:
 
     request.enableCache({
-      max: 50,
-      maxAge: 20000
+      stdTTL: 60,
+      checkperiod: 120
     });
 
 ## How It Works
@@ -59,6 +59,7 @@ We plan to make this more flexible and full-featured in the feature.
 
 ## Version History
 
+* 0.1.0 Switched the module used for caching.
 * 0.0.5 Initial release. This will need some work before I consider it production ready.
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square

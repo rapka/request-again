@@ -1,12 +1,10 @@
-/* Requirements */
 var chai = require('chai');
 var expect = chai.expect;
 
 var request = require('../request-again');
 
 request.enableCache({
-  max: 5,
-  maxAge: 1000 * 60 * 1
+  stdTTL: 300
 });
 
 function makeTheCall() {

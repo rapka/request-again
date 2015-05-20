@@ -1,6 +1,6 @@
 {
   "name": "request-again",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Cached plugin for the request NodeJS module.",
   "main": "request-again.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "clone": "^1.0.2",
-    "lru-cache": "^2.6.4",
+    "node-cache": "^2.1.1",
     "request": "^2.55.0"
   },
   "devDependencies": {
