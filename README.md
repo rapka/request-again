@@ -6,6 +6,50 @@ Install via npm:
 
     npm install --save request-again
 
+## What Does it Do?
+
+This module is a plugin for [https://www.npmjs.com/package/request](request), not a direct replacement. For now, it only supports a limited portion of request's functionality.
+
+The request-again module allows you to cache the body of a request http call for a period of time. This is helpful if you regularly call an external API, but the information you are retrieving is updated infrequently.
+
+## How to Use It
+
+After installing the module:
+
+    var request = require('request-again');
+
+Then call ``request.cached()`` like you would call request ordinarily. Here's an example calling the Pokémon API:
+
+    request.cached('http://pokeapi.co/api/v1/pokemon/25', {}, function(err, res, body) {
+      console.log(body);
+    });
+
+If you make the same request call within a period of time, you will retrieve the cached object immediately instead of calling the API again.
+
+## Defaults and Settings
+
+A cache will be created automatically when you require the module with the following default settings:
+
+* ``max: 10``. This is the maximum size (number of objects) held by the cache. If the maximum is exceeded, the least-recently-used object will be kicked from the cache.
+* ``maxAge: 60000``. This is the maximum time (in milliseconds) which an object will be stored in the cache before new data is requested from the external API. The default is 1 minute.
+
+You can override the default settings:
+
+    request.enableCache({
+      max: 50,
+      maxAge: 20000
+    });
+
+## Future Development
+
+Right now the module only supports a request structure of:
+
+    request.cached(url, optionsObject, callbackFunction);
+
+So it is not quite as flexible as a standard request object. Additionally, if you retrieve a cached response, the first two parameters of the callback function (`error`` and ``response``) will be ``null``, so you will only get back the ``body``.
+
+We plan to make this more flexible and full-featured in the feature.
+
 ## Version History
 
 * 0.0.1 Initial release. This will need some serious work before I consider it production ready.
