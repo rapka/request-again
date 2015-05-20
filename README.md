@@ -40,6 +40,10 @@ You can override the default settings:
       maxAge: 20000
     });
 
+## How It Works
+
+The cache is set based on the ``url`` of the request as well as the ``options`` object. Future request calls must match both of these parameters for the cache to be retrieved, otherwise a new http call will be made and that new response will be stored in the cache.
+
 ## Future Development
 
 Right now the module only supports a request structure of:
