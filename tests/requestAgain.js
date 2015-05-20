@@ -11,7 +11,9 @@ request.enableCache({
 
 function makeTheCall() {
   var startTime = Date.now();
-  request.cached('http://pokeapi.co/api/v1/pokemon/1', {}, function(err, res, body) {
+  request.cached('http://pokeapi.co/api/v1/pokemon/1', {
+    someOption: 'aValueForTheOption'
+  }, function(err, res, body) {
     return console.log('The request took:', Date.now() - startTime + ' ms');
   });
 }
