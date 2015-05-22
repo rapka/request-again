@@ -16,11 +16,11 @@ The request-again module allows you to cache the body of a request http call for
 
 After installing the module:
 
-    var request = require('request-again');
+    var requestAgain = require('request-again');
 
 Then call ``request.cached()`` like you would call request ordinarily. Here's an example calling the Pokémon API:
 
-    request.cached('http://pokeapi.co/api/v1/pokemon/1', {
+    requestAgain.cached('http://pokeapi.co/api/v1/pokemon/1', {
       someOption: value
     }, function(err, res, body) {
       return console.log('The request took:',
@@ -38,7 +38,7 @@ A cache will be created automatically when you require the module with the follo
 
 You can override the default settings:
 
-    request.enableCache({
+    requestAgain.enableCache({
       max: 50,
       maxAge: 20000
     });
@@ -47,15 +47,17 @@ You can override the default settings:
 
 The cache is set based on the ``url`` of the request as well as the ``options`` object. Future request calls must match both of these parameters for the cache to be retrieved, otherwise a new http call will be made and that new response will be stored in the cache.
 
-## Future Development
+## Construction
 
-Right now the module only supports a request structure of:
+This module supports the same argument constructions as the request module, so your method call can look like any of the following:
 
-    request.cached(url, optionsObject, callbackFunction);
+* ``requestAgain.cached(url, options, callback)``
+* ``requestAgain.cached(url, callback)`` - uses default request options
+* ``requestAgain.cached(options, callback)`` - requires ``options.url`` or ``options.uri``
 
-So it is not quite as flexible as a standard request object. Additionally, if you retrieve a cached response, the first two parameters of the callback function (``error`` and ``response``) will be ``null``, so you will only get back the ``body``.
+## Callback
 
-We plan to make this more flexible and full-featured in the feature.
+If you retrieve a cached response, the first two parameters (``error`` and ``response``) will be null, so you will only be able to access ``body`` from the cache.
 
 ## Version History
 
