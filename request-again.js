@@ -38,9 +38,36 @@ RequestAgain.prototype.enableCache = function(cacheOptions) {
 RequestAgain.prototype.cached = function(param1, param2, param3) {
   var self = this;
   var url, options, callback;
-  url = param1;
-  options = param2;
-  callback = param3;
+
+  if (typeof param1 === 'string') {
+    // first param is the url
+    url = param1;
+    if (typeof param2 == 'object') {
+      options = param2;
+      callback = param3;
+    } else if (typeof param2 == 'function') {
+      options = {};
+      callback = param2;
+    } else {
+      throw new Error('Request callback appears to be undefined or invalid.');
+    }
+  } else if (typeof param1 === 'object') {
+    // first param is the options
+    url = param1.url || param1.uri;
+    if (param1.baseUrl) {
+      url = param1.baseUrl + param1.uri;
+    }
+    options = param1;
+    if (typeof param2 == 'function') {
+      callback = param2;
+    } else {
+      throw new Error('Request callback appears to be undefined or invalid.');
+    }
+  }
+
+  if (!url) {
+    throw new Error('Request URL appears to be undefined or invalid.');
+  }
 
   var optionsClone = self.cloner(options);
   var cachedResponse = self.getCache(url, optionsClone);
@@ -70,6 +97,14 @@ RequestAgain.prototype.getCache = function(url, options) {
   var value = self.cache.get(key);
   var valueClone = self.cloner(value);
   return valueClone;
+};
+
+/* REQUEST FUNCTIONS */
+
+RequestAgain.prototype.defaults = function(requestDefaults) {
+  var self = this;
+  request = request.defaults(requestDefaults);
+  return self;
 };
 
 /* HELPERS */
