@@ -35,45 +35,42 @@ RequestAgain.prototype.enableCache = function(cacheOptions) {
   return self;
 };
 
-RequestAgain.prototype.cached = function(param1, param2, param3) {
+RequestAgain.prototype.cached = function() {
   var self = this;
   var url, options, callback;
 
-  if (typeof param1 === 'string') {
-    // first param is the url
-    url = param1;
-    if (typeof param2 == 'object') {
-      options = param2;
-      callback = param3;
-    } else if (typeof param2 == 'function') {
-      options = {};
-      callback = param2;
-    } else {
-      throw new Error('Request callback appears to be undefined or invalid.');
-    }
-  } else if (typeof param1 === 'object') {
-    // first param is the options
-    url = param1.url || param1.uri;
-    if (param1.baseUrl) {
-      url = param1.baseUrl + param1.uri;
-    }
-    options = param1;
-    if (typeof param2 == 'function') {
-      callback = param2;
-    } else {
-      throw new Error('Request callback appears to be undefined or invalid.');
+  for (var i = 0; i < arguments.length; i++) {
+    var arg = arguments[i];
+    if (typeof arg === 'string') {
+      // url string
+      url = arg;
+    } else if (typeof arg === 'object') {
+      // options object
+      options = arg;
+    } else if (typeof arg === 'function') {
+      // callback function
+      callback = arg;
     }
   }
 
   if (!url) {
-    throw new Error('Request URL appears to be undefined or invalid.');
+    if (options.url || options.uri) {
+      url = options.url || options.uri;
+    } else {
+      throw new Error('Request URL appears to be undefined or invalid.');
+    }
+  } else if (!callback) {
+    throw new Error('Request callback appears to be undefined or invalid.');
   }
 
+  // check for a cached response
   var optionsClone = self.cloner(options);
   var cachedResponse = self.getCache(url, optionsClone);
   if (cachedResponse) {
     return callback(null, null, cachedResponse);
   }
+
+  // no cache yet - make the request
   request(url, options, function(err, res, body) {
     if (err) {
       return callback(err, null, null);

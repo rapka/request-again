@@ -59,6 +59,7 @@ We plan to make this more flexible and full-featured in the feature.
 
 ## Version History
 
+* 0.2.0 Supports multiple argument structures for the request call. Add request.defaults() convenience method.
 * 0.1.1 Back to lru-cache. Returns cloned object from cache so that you can't alter the cache object itself. Might make this a toggle later.
 * 0.1.0 Switched the module used for caching.
 * 0.0.5 Initial release. This will need some work before I consider it production ready.

@@ -10,7 +10,8 @@ function makeTheCall() {
   requestAgain.cached('http://pokeapi.co/api/v1/pokemon/1', {
     someOption: 'aValueForTheOption'
   }, function(err, res, body) {
-    return console.log('The request took:', Date.now() - startTime + ' ms');
+    console.log('\nerr::', err);
+    return console.log('The request took:', Date.now() - startTime + ' ms\n');
   });
 }
 
