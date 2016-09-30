@@ -3,7 +3,7 @@
 /* REQUIREMENTS */
 
 var request = require('request');
-var cache = require('lru-cache');
+var cache = require('lru-cache-for-clusters-as-promised');
 
 /* DEFAULTS */
 
