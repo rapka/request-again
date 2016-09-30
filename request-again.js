@@ -84,16 +84,19 @@ RequestAgain.prototype.setCache = function(url, options, value) {
   var self = this;
   var key = genKey(url, options);
   var valueClone = self.cloner(value);
-  self.cache.set(key, valueClone);
-  return;
+  self.cache.set(key, valueClone).then(() => {
+    return;
+  });
 };
 
 RequestAgain.prototype.getCache = function(url, options) {
   var self = this;
   var key = genKey(url, options);
-  var value = self.cache.get(key);
-  var valueClone = self.cloner(value);
-  return valueClone;
+  self.cache.get(key).then((value) => {
+    var valueClone = self.cloner(value);
+    return valueClone;
+  });
+
 };
 
 /* REQUEST FUNCTIONS */
