@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "clone": "^1.0.2",
-    "lru-cache": "^2.6.4",
     "lru-cache-for-clusters-as-promised": "^1.1.0",
     "request": "^2.55.0"
   },
