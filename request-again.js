@@ -4,6 +4,8 @@
 
 var request = require('request');
 var cache = require('lru-cache-for-clusters-as-promised');
+var rp = require('request-promise');
+var cloner = require('clone');
 
 /* DEFAULTS */
 
@@ -18,7 +20,6 @@ var RequestAgain = function() {
   var self = this;
   self.cacheOptions = defaults;
   self.cache = new cache(self.cacheOptions);
-  self.cloner = require('clone');
 };
 
 module.exports = new RequestAgain();
@@ -29,7 +30,8 @@ RequestAgain.prototype.enableCache = function(cacheOptions) {
   var self = this;
   self.cacheOptions = {
     max: cacheOptions.max || defaults.max,
-    maxAge: cacheOptions.maxAge || defaults.maxAge
+    maxAge: cacheOptions.maxAge || defaults.maxAge,
+    namespace: 'images'
   };
   self.cache = new cache(self.cacheOptions);
   return self;
@@ -64,39 +66,30 @@ RequestAgain.prototype.cached = function() {
   }
 
   // check for a cached response
-  var optionsClone = self.cloner(options);
-  var cachedResponse = self.getCache(url, optionsClone);
-  if (cachedResponse) {
-    return callback(null, null, cachedResponse);
-  }
+  var optionsClone = cloner(options);
 
-  // no cache yet - make the request
-  request(url, options, function(err, res, body) {
-    if (err) {
-      return callback(err, null, null);
-    }
-    self.setCache(url, optionsClone, body);
-    return callback(null, res, body);
-  });
-};
-
-RequestAgain.prototype.setCache = function(url, options, value) {
-  var self = this;
-  var key = genKey(url, options);
-  var valueClone = self.cloner(value);
-  self.cache.set(key, valueClone).then(() => {
-    return;
-  });
-};
-
-RequestAgain.prototype.getCache = function(url, options) {
-  var self = this;
   var key = genKey(url, options);
   self.cache.get(key).then((value) => {
-    var valueClone = self.cloner(value);
-    return valueClone;
-  });
+    if (value) {
+      // Return the cached value
+      var valueClone = cloner(value);
+      return callback(null, null, valueClone);
+    } else {
+      // No cache yet - make the request
+      return rp(options).then(function(body, skipCache) {
+        var valueClone = cloner(body);
 
+        return self.cache.set(key, valueClone).then(function() {
+          return body;
+        });
+      })
+      .then((body) => {
+        return callback(null, null, body);
+      }).catch(function (err) {
+        callback(err, null, null);
+      });
+    }
+  })
 };
 
 /* REQUEST FUNCTIONS */
