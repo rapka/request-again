@@ -72,7 +72,8 @@ RequestAgain.prototype.cached = function() {
   self.cache.get(key).then((value) => {
     if (value) {
       // Return the cached value
-      var valueClone = cloner(value);
+      // Need to create a new buffer here because reasons???
+      var valueClone = cloner(new Buffer(value.data));
       return callback(null, null, valueClone);
     } else {
       // No cache yet - make the request
